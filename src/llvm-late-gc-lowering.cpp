@@ -1352,7 +1352,7 @@ State LateLowerGCFrame::LocalScan(Function &F) {
                 if (CI->hasStructRetAttr()) {
                     AllocaInst *SRet = dyn_cast<AllocaInst>((CI->arg_begin()[0])->stripInBoundsOffsets());
                     if (SRet) {
-                        Type *ElT = SRet->getAllocatedType();
+                        Type *ElT = (CI->arg_begin()[0])->getType()->getPointerElementType();
                         if (!(SRet->isStaticAlloca() && isa<PointerType>(ElT) && ElT->getPointerAddressSpace() == AddressSpace::Tracked)) {
                             auto tracked = CountTrackedPointers(ElT);
                             if (tracked.count) {
